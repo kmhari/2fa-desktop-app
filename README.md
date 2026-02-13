@@ -2,6 +2,12 @@
 
 A native macOS desktop client for [2FAuth](https://docs.2fauth.app/) — access your two-factor authentication codes without opening a browser.
 
+<p align="center">
+  <img src="docs/screenshots/app-copied.png" width="320" alt="2FA Auth — click to copy">
+  &nbsp;&nbsp;
+  <img src="docs/screenshots/app-expiring.png" width="320" alt="2FA Auth — countdown expiring">
+</p>
+
 ## Features
 
 - **OTP codes at a glance** — View all your TOTP/HOTP codes with live countdown timers

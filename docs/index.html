@@ -87,6 +87,32 @@
       box-shadow: 0 0 20px rgba(249, 115, 22, 0.25);
     }
 
+    /* Screenshots */
+    .screenshots {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      padding: 0 24px 80px;
+    }
+
+    .screenshots img {
+      width: 280px;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    @media (max-width: 640px) {
+      .screenshots {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .screenshots img {
+        width: 240px;
+      }
+    }
+
     /* Features */
     .features {
       padding: 80px 0;
@@ -211,6 +237,12 @@
     <p class="hero-tagline">Desktop client for your self-hosted 2FAuth instance</p>
     <a href="https://github.com/kmhari/2fa-desktop-app/releases/latest" class="btn-primary">Download for macOS</a>
   </section>
+
+  <!-- Screenshots -->
+  <div class="screenshots">
+    <img src="screenshots/app-copied.png" alt="2FA Auth — click to copy">
+    <img src="screenshots/app-expiring.png" alt="2FA Auth — countdown expiring">
+  </div>
 
   <!-- Features -->
   <section class="features">
