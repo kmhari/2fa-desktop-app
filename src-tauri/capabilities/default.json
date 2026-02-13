@@ -1,0 +1,28 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Default capability for all windows",
+  "windows": ["main", "tray-popup", "scan-overlay"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-show",
+    "core:window:allow-hide",
+    "core:window:allow-set-focus",
+    "core:window:allow-close",
+    "core:window:allow-center",
+    "core:window:allow-set-size",
+    "core:window:allow-set-position",
+    "core:window:allow-is-visible",
+    "core:window:allow-outer-position",
+    "core:window:allow-outer-size",
+    "core:window:allow-inner-size",
+    "core:webview:allow-create-webview-window",
+    "core:event:default",
+    "core:event:allow-emit",
+    "core:event:allow-emit-to",
+    "core:event:allow-listen",
+    "positioner:default",
+    "clipboard-manager:allow-write-text",
+    "updater:default"
+  ]
+}

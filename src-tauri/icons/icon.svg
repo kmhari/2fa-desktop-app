@@ -1,0 +1,49 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1024" height="1024" rx="228" fill="#12122B"/>
+  <rect x="3" y="3" width="1018" height="1018" rx="225" fill="none" stroke="#2D2D44" stroke-width="3"/>
+
+  <!-- Shield -->
+  <path d="M512 115
+           L770 240
+           Q785 247 785 264
+           V525
+           Q785 680 640 790
+           Q570 842 512 878
+           Q454 842 384 790
+           Q239 680 239 525
+           V264
+           Q239 247 254 240
+           Z"
+        fill="#F97316"/>
+
+  <!-- Shield inner (dark cutout for depth) -->
+  <path d="M512 175
+           L735 282
+           Q745 287 745 300
+           V520
+           Q745 655 615 755
+           Q560 798 512 828
+           Q464 798 409 755
+           Q279 655 279 520
+           V300
+           Q279 287 289 282
+           Z"
+        fill="#1A1A2E"/>
+
+  <!-- Lock shackle (arc) -->
+  <path d="M432 490 V415
+           Q432 340 512 340
+           Q592 340 592 415
+           V490"
+        fill="none" stroke="#F97316" stroke-width="44" stroke-linecap="round"/>
+
+  <!-- Lock body -->
+  <rect x="400" y="490" width="224" height="180" rx="18" fill="#F97316"/>
+
+  <!-- Keyhole circle -->
+  <circle cx="512" cy="558" r="30" fill="#1A1A2E"/>
+
+  <!-- Keyhole slot -->
+  <path d="M500 575 L494 635 Q493 645 512 645 Q531 645 530 635 L524 575 Z" fill="#1A1A2E"/>
+</svg>

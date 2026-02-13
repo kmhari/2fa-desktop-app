@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2FA Auth — Desktop 2FA Client</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg width='1024' height='1024' viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='1024' height='1024' rx='228' fill='%2312122B'/%3E%3Crect x='3' y='3' width='1018' height='1018' rx='225' fill='none' stroke='%232D2D44' stroke-width='3'/%3E%3Cpath d='M512 115 L770 240 Q785 247 785 264 V525 Q785 680 640 790 Q570 842 512 878 Q454 842 384 790 Q239 680 239 525 V264 Q239 247 254 240 Z' fill='%23F97316'/%3E%3Cpath d='M512 175 L735 282 Q745 287 745 300 V520 Q745 655 615 755 Q560 798 512 828 Q464 798 409 755 Q279 655 279 520 V300 Q279 287 289 282 Z' fill='%231A1A2E'/%3E%3Cpath d='M432 490 V415 Q432 340 512 340 Q592 340 592 415 V490' fill='none' stroke='%23F97316' stroke-width='44' stroke-linecap='round'/%3E%3Crect x='400' y='490' width='224' height='180' rx='18' fill='%23F97316'/%3E%3Ccircle cx='512' cy='558' r='30' fill='%231A1A2E'/%3E%3Cpath d='M500 575 L494 635 Q493 645 512 645 Q531 645 530 635 L524 575 Z' fill='%231A1A2E'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #0F0F1A;
+      color: #F8FAFC;
+      font-family: 'Geist Mono', monospace;
+      font-weight: 400;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 24px;
+    }
+
+    .hero-icon {
+      width: 80px;
+      height: 80px;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #F8FAFC;
+      line-height: 1.1;
+    }
+
+    .hero-tagline {
+      color: #94A3B8;
+      font-size: 16px;
+      max-width: 480px;
+    }
+
+    .btn-primary {
+      background: #F97316;
+      color: #0F0F1A;
+      padding: 12px 32px;
+      border: none;
+      border-radius: 0;
+      font-family: 'Geist Mono', monospace;
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 20px rgba(249, 115, 22, 0.25);
+    }
+
+    /* Features */
+    .features {
+      padding: 80px 0;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: #1E1E32;
+      border: 1px solid #2D2D44;
+      border-radius: 0;
+      padding: 24px;
+    }
+
+    .feature-card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #F97316;
+      margin-bottom: 12px;
+    }
+
+    .feature-card p {
+      color: #94A3B8;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Bottom CTA */
+    .bottom-cta {
+      padding: 80px 0;
+      text-align: center;
+      background: #1A1A2E;
+    }
+
+    .bottom-cta-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .bottom-cta h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #F8FAFC;
+    }
+
+    .bottom-cta-note {
+      color: #94A3B8;
+      font-size: 13px;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 40px 0;
+      text-align: center;
+      border-top: 1px solid #2D2D44;
+    }
+
+    .footer a {
+      color: #94A3B8;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: color 0.2s ease;
+    }
+
+    .footer a:hover {
+      color: #F97316;
+    }
+
+    .footer-copy {
+      color: #94A3B8;
+      font-size: 12px;
+      margin-top: 12px;
+      opacity: 0.6;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      .hero-tagline {
+        font-size: 14px;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .bottom-cta h2 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <section class="hero">
+    <svg class="hero-icon" width="80" height="80" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1024" height="1024" rx="228" fill="#12122B"/>
+      <rect x="3" y="3" width="1018" height="1018" rx="225" fill="none" stroke="#2D2D44" stroke-width="3"/>
+      <path d="M512 115 L770 240 Q785 247 785 264 V525 Q785 680 640 790 Q570 842 512 878 Q454 842 384 790 Q239 680 239 525 V264 Q239 247 254 240 Z" fill="#F97316"/>
+      <path d="M512 175 L735 282 Q745 287 745 300 V520 Q745 655 615 755 Q560 798 512 828 Q464 798 409 755 Q279 655 279 520 V300 Q279 287 289 282 Z" fill="#1A1A2E"/>
+      <path d="M432 490 V415 Q432 340 512 340 Q592 340 592 415 V490" fill="none" stroke="#F97316" stroke-width="44" stroke-linecap="round"/>
+      <rect x="400" y="490" width="224" height="180" rx="18" fill="#F97316"/>
+      <circle cx="512" cy="558" r="30" fill="#1A1A2E"/>
+      <path d="M500 575 L494 635 Q493 645 512 645 Q531 645 530 635 L524 575 Z" fill="#1A1A2E"/>
+    </svg>
+    <h1>2FA Auth</h1>
+    <p class="hero-tagline">Desktop client for your self-hosted 2FAuth instance</p>
+    <a href="https://github.com/kmhari/2fa-desktop-app/releases/latest" class="btn-primary">Download for macOS</a>
+  </section>
+
+  <!-- Features -->
+  <section class="features">
+    <div class="container">
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3>OTP Codes</h3>
+          <p>View and copy two-factor authentication codes instantly. Click any account to copy.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Tray Popup</h3>
+          <p>Quick-access your OTP codes from the menu bar without switching windows.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Keyboard Nav</h3>
+          <p>Navigate accounts with arrow keys, search with Cmd+F, copy with Enter.</p>
+        </div>
+        <div class="feature-card">
+          <h3>QR Scanner</h3>
+          <p>Scan QR codes directly from your screen to add new accounts.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom CTA -->
+  <section class="bottom-cta">
+    <div class="container">
+      <div class="bottom-cta-inner">
+        <h2>Ready to secure your accounts?</h2>
+        <a href="https://github.com/kmhari/2fa-desktop-app/releases/latest" class="btn-primary">Download for macOS</a>
+        <p class="bottom-cta-note">macOS (Apple Silicon) · Signed &amp; Notarized</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <a href="https://github.com/kmhari/2fa-desktop-app">View on GitHub</a>
+      <p class="footer-copy">&copy; 2026 2FA Auth</p>
+    </div>
+  </footer>
+
+</body>
+</html>
