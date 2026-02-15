@@ -15,8 +15,9 @@
       box-sizing: border-box;
     }
 
-    html {
-      scroll-behavior: smooth;
+    html, body {
+      height: 100%;
+      overflow: hidden;
     }
 
     body {
@@ -29,30 +30,38 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    /* Hero */
-    .hero {
-      min-height: 100vh;
+    .page {
+      height: 100vh;
       display: flex;
       flex-direction: column;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      gap: 24px;
+      gap: 80px;
+      padding: 40px 60px;
+      min-height: 0;
     }
 
-    .hero-icon {
-      width: 80px;
-      height: 80px;
+    /* Left column — branding */
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 360px;
+      flex-shrink: 0;
     }
 
-    .hero h1 {
-      font-size: 48px;
+    .brand-icon {
+      width: 56px;
+      height: 56px;
+    }
+
+    .brand h1 {
+      font-size: 40px;
       font-weight: 700;
       letter-spacing: 0.15em;
       text-transform: uppercase;
@@ -60,10 +69,9 @@
       line-height: 1.1;
     }
 
-    .hero-tagline {
+    .brand-tagline {
       color: #94A3B8;
-      font-size: 16px;
-      max-width: 480px;
+      font-size: 14px;
     }
 
     .btn-primary {
@@ -74,114 +82,78 @@
       border-radius: 0;
       font-family: 'Geist Mono', monospace;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       cursor: pointer;
       text-decoration: none;
       display: inline-block;
       transition: box-shadow 0.2s ease;
+      align-self: flex-start;
     }
 
     .btn-primary:hover {
       box-shadow: 0 0 20px rgba(249, 115, 22, 0.25);
     }
 
-    /* Screenshots */
+    .brand-note {
+      color: #64748B;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .features-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .feature-tag {
+      background: #1E1E32;
+      border: 1px solid #2D2D44;
+      color: #94A3B8;
+      font-size: 11px;
+      padding: 4px 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .feature-tag span {
+      color: #F97316;
+      margin-right: 4px;
+    }
+
+    /* Right column — screenshots */
     .screenshots {
       display: flex;
-      justify-content: center;
-      gap: 32px;
-      padding: 0 24px 80px;
+      gap: 24px;
+      align-items: center;
+      min-height: 0;
     }
 
     .screenshots img {
-      width: 280px;
+      height: min(70vh, 520px);
+      width: auto;
       border-radius: 12px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     }
 
-    @media (max-width: 640px) {
-      .screenshots {
-        flex-direction: column;
-        align-items: center;
-        gap: 24px;
-      }
-
-      .screenshots img {
-        width: 240px;
-      }
-    }
-
-    /* Features */
-    .features {
-      padding: 80px 0;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    .feature-card {
-      background: #1E1E32;
-      border: 1px solid #2D2D44;
-      border-radius: 0;
-      padding: 24px;
-    }
-
-    .feature-card h3 {
-      font-size: 14px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: #F97316;
-      margin-bottom: 12px;
-    }
-
-    .feature-card p {
-      color: #94A3B8;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    /* Bottom CTA */
-    .bottom-cta {
-      padding: 80px 0;
-      text-align: center;
-      background: #1A1A2E;
-    }
-
-    .bottom-cta-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 24px;
-    }
-
-    .bottom-cta h2 {
-      font-size: 28px;
-      font-weight: 700;
-      color: #F8FAFC;
-    }
-
-    .bottom-cta-note {
-      color: #94A3B8;
-      font-size: 13px;
-    }
-
     /* Footer */
     .footer {
-      padding: 40px 0;
-      text-align: center;
-      border-top: 1px solid #2D2D44;
+      padding: 16px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #1E1E32;
+      flex-shrink: 0;
     }
 
     .footer a {
-      color: #94A3B8;
+      color: #64748B;
       text-decoration: none;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.1em;
@@ -193,99 +165,96 @@
     }
 
     .footer-copy {
-      color: #94A3B8;
-      font-size: 12px;
-      margin-top: 12px;
+      color: #64748B;
+      font-size: 11px;
       opacity: 0.6;
     }
 
-    /* Responsive */
-    @media (max-width: 640px) {
-      .hero h1 {
+    /* Mobile */
+    @media (max-width: 900px) {
+      html, body {
+        height: auto;
+        overflow: auto;
+      }
+
+      .page {
+        height: auto;
+        min-height: 100vh;
+      }
+
+      .main {
+        flex-direction: column;
+        gap: 40px;
+        padding: 40px 24px;
+        text-align: center;
+      }
+
+      .brand {
+        align-items: center;
+      }
+
+      .btn-primary {
+        align-self: center;
+      }
+
+      .screenshots {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .screenshots img {
+        height: auto;
+        width: min(70vw, 280px);
+      }
+
+      .brand h1 {
         font-size: 32px;
       }
 
-      .hero-tagline {
-        font-size: 14px;
-      }
-
-      .features-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .bottom-cta h2 {
-        font-size: 22px;
+      .footer {
+        padding: 16px 24px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Hero -->
-  <section class="hero">
-    <svg class="hero-icon" width="80" height="80" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-      <rect width="1024" height="1024" rx="228" fill="#12122B"/>
-      <rect x="3" y="3" width="1018" height="1018" rx="225" fill="none" stroke="#2D2D44" stroke-width="3"/>
-      <path d="M512 115 L770 240 Q785 247 785 264 V525 Q785 680 640 790 Q570 842 512 878 Q454 842 384 790 Q239 680 239 525 V264 Q239 247 254 240 Z" fill="#F97316"/>
-      <path d="M512 175 L735 282 Q745 287 745 300 V520 Q745 655 615 755 Q560 798 512 828 Q464 798 409 755 Q279 655 279 520 V300 Q279 287 289 282 Z" fill="#1A1A2E"/>
-      <path d="M432 490 V415 Q432 340 512 340 Q592 340 592 415 V490" fill="none" stroke="#F97316" stroke-width="44" stroke-linecap="round"/>
-      <rect x="400" y="490" width="224" height="180" rx="18" fill="#F97316"/>
-      <circle cx="512" cy="558" r="30" fill="#1A1A2E"/>
-      <path d="M500 575 L494 635 Q493 645 512 645 Q531 645 530 635 L524 575 Z" fill="#1A1A2E"/>
-    </svg>
-    <h1>2FA Auth</h1>
-    <p class="hero-tagline">Desktop client for your self-hosted 2FAuth instance</p>
-    <a href="https://github.com/kmhari/2fa-desktop-app/releases/latest" class="btn-primary">Download for macOS</a>
-  </section>
-
-  <!-- Screenshots -->
-  <div class="screenshots">
-    <img src="screenshots/app-copied.png" alt="2FA Auth — click to copy">
-    <img src="screenshots/app-expiring.png" alt="2FA Auth — countdown expiring">
-  </div>
-
-  <!-- Features -->
-  <section class="features">
-    <div class="container">
-      <div class="features-grid">
-        <div class="feature-card">
-          <h3>OTP Codes</h3>
-          <p>View and copy two-factor authentication codes instantly. Click any account to copy.</p>
+  <div class="page">
+    <div class="main">
+      <div class="brand">
+        <svg class="brand-icon" width="56" height="56" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1024" height="1024" rx="228" fill="#12122B"/>
+          <rect x="3" y="3" width="1018" height="1018" rx="225" fill="none" stroke="#2D2D44" stroke-width="3"/>
+          <path d="M512 115 L770 240 Q785 247 785 264 V525 Q785 680 640 790 Q570 842 512 878 Q454 842 384 790 Q239 680 239 525 V264 Q239 247 254 240 Z" fill="#F97316"/>
+          <path d="M512 175 L735 282 Q745 287 745 300 V520 Q745 655 615 755 Q560 798 512 828 Q464 798 409 755 Q279 655 279 520 V300 Q279 287 289 282 Z" fill="#1A1A2E"/>
+          <path d="M432 490 V415 Q432 340 512 340 Q592 340 592 415 V490" fill="none" stroke="#F97316" stroke-width="44" stroke-linecap="round"/>
+          <rect x="400" y="490" width="224" height="180" rx="18" fill="#F97316"/>
+          <circle cx="512" cy="558" r="30" fill="#1A1A2E"/>
+          <path d="M500 575 L494 635 Q493 645 512 645 Q531 645 530 635 L524 575 Z" fill="#1A1A2E"/>
+        </svg>
+        <h1>2FA Auth</h1>
+        <p class="brand-tagline">Desktop client for your self-hosted 2FAuth instance</p>
+        <div class="features-list">
+          <div class="feature-tag"><span>//</span> Click to copy</div>
+          <div class="feature-tag"><span>//</span> Menu bar tray</div>
+          <div class="feature-tag"><span>//</span> Keyboard nav</div>
+          <div class="feature-tag"><span>//</span> QR scanner</div>
+          <div class="feature-tag"><span>//</span> Auto-update</div>
+          <div class="feature-tag"><span>//</span> Encrypted</div>
         </div>
-        <div class="feature-card">
-          <h3>Tray Popup</h3>
-          <p>Quick-access your OTP codes from the menu bar without switching windows.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Keyboard Nav</h3>
-          <p>Navigate accounts with arrow keys, search with Cmd+F, copy with Enter.</p>
-        </div>
-        <div class="feature-card">
-          <h3>QR Scanner</h3>
-          <p>Scan QR codes directly from your screen to add new accounts.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Bottom CTA -->
-  <section class="bottom-cta">
-    <div class="container">
-      <div class="bottom-cta-inner">
-        <h2>Ready to secure your accounts?</h2>
         <a href="https://github.com/kmhari/2fa-desktop-app/releases/latest" class="btn-primary">Download for macOS</a>
-        <p class="bottom-cta-note">macOS (Apple Silicon) · Signed &amp; Notarized</p>
+        <p class="brand-note">Apple Silicon &middot; Signed &amp; Notarized</p>
+      </div>
+      <div class="screenshots">
+        <img src="screenshots/app-copied.png" alt="2FA Auth — click to copy">
+        <img src="screenshots/app-expiring.png" alt="2FA Auth — countdown expiring">
       </div>
     </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
+    <footer class="footer">
       <a href="https://github.com/kmhari/2fa-desktop-app">View on GitHub</a>
-      <p class="footer-copy">&copy; 2026 2FA Auth</p>
-    </div>
-  </footer>
+      <span class="footer-copy">&copy; 2026 2FA Auth</span>
+    </footer>
+  </div>
 
 </body>
 </html>
