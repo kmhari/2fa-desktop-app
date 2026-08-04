@@ -5,6 +5,7 @@ import type { Account } from "../types";
 interface AccountsStore {
   accounts: Account[];
   isLoading: boolean;
+  isStale: boolean;
   error: string | null;
   searchQuery: string;
   fetchAccounts: () => Promise<void>;
@@ -13,19 +14,25 @@ interface AccountsStore {
   filteredAccounts: () => Account[];
 }
 
+let fetchSeq = 0;
+
 export const useAccountsStore = create<AccountsStore>((set, get) => ({
   accounts: [],
   isLoading: false,
+  isStale: false,
   error: null,
   searchQuery: "",
 
   fetchAccounts: async () => {
+    const seq = ++fetchSeq;
     set({ isLoading: true, error: null });
     try {
       const accounts = await commands.fetchAccounts();
-      set({ accounts, isLoading: false });
+      if (seq !== fetchSeq) return; // superseded by a newer request
+      set({ accounts, isLoading: false, isStale: false });
     } catch (e) {
-      set({ error: String(e), isLoading: false });
+      if (seq !== fetchSeq) return;
+      set({ error: String(e), isLoading: false, isStale: true });
     }
   },
 

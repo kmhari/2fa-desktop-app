@@ -13,6 +13,7 @@ export function TrayPopupView() {
   const {
     accounts,
     isLoading,
+    isStale,
     searchQuery,
     fetchAccounts,
     setSearchQuery,
@@ -54,6 +55,11 @@ export function TrayPopupView() {
           className="h-7 text-xs"
         />
       </div>
+      {isStale && (
+        <p className="text-[11px] text-[#EF4444] px-2 pb-1">
+          Refresh failed — showing last known codes
+        </p>
+      )}
       <ScrollArea className="flex-1">
         <div className="px-1">
           {filtered.length === 0 && (
@@ -66,6 +72,7 @@ export function TrayPopupView() {
               key={account.id}
               account={account}
               remaining={remaining[account.id] ?? 0}
+              stale={isStale}
             />
           ))}
         </div>

@@ -13,9 +13,10 @@ import type { Account } from "@/types";
 interface TrayAccountItemProps {
   account: Account;
   remaining: number;
+  stale?: boolean;
 }
 
-export function TrayAccountItem({ account, remaining }: TrayAccountItemProps) {
+export function TrayAccountItem({ account, remaining, stale }: TrayAccountItemProps) {
   const period = account.period ?? DEFAULT_PERIOD;
   const deleteAccount = useAccountsStore((s) => s.deleteAccount);
   const copy = useClipboard();
@@ -55,7 +56,10 @@ export function TrayAccountItem({ account, remaining }: TrayAccountItemProps) {
         </p>
       </div>
       {account.otp && (
-        <div className="flex items-center gap-1.5">
+        <div
+          className={`flex items-center gap-1.5${stale ? " opacity-40 grayscale" : ""}`}
+          title={stale ? "Refresh failed — this code may be stale" : undefined}
+        >
           {isCopied ? (
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#F97316]">Copied!</span>
           ) : (
@@ -65,7 +69,7 @@ export function TrayAccountItem({ account, remaining }: TrayAccountItemProps) {
               className="text-sm"
             />
           )}
-          {account.otp_type === "totp" && (
+          {account.otp_type === "totp" && !stale && (
             <CountdownRing remaining={remaining} period={period} size={22} />
           )}
         </div>

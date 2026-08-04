@@ -16,6 +16,7 @@ export function AccountsScreen() {
   const {
     accounts,
     isLoading,
+    isStale,
     error,
     searchQuery,
     fetchAccounts,
@@ -119,8 +120,10 @@ export function AccountsScreen() {
       <Separator className="bg-[#2D2D44]" />
       <ScrollArea className="flex-1">
         <div className="p-2">
-          {error && (
-            <p className="text-sm text-[#EF4444] p-3">{error}</p>
+          {isStale && (
+            <p className="text-sm text-[#EF4444] p-3">
+              {error ?? "Refresh failed"} — showing last known codes
+            </p>
           )}
           {!isLoading && filtered.length === 0 && !error && (
             <div className="text-center py-8 text-[#94A3B8]">
@@ -145,6 +148,7 @@ export function AccountsScreen() {
               account={account}
               remaining={remaining[account.id] ?? 0}
               isFocused={index === focusedIndex}
+              stale={isStale}
             />
           ))}
         </div>

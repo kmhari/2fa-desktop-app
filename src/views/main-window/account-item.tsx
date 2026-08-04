@@ -14,9 +14,10 @@ interface AccountItemProps {
   account: Account;
   remaining: number;
   isFocused?: boolean;
+  stale?: boolean;
 }
 
-export function AccountItem({ account, remaining, isFocused }: AccountItemProps) {
+export function AccountItem({ account, remaining, isFocused, stale }: AccountItemProps) {
   const period = account.period ?? DEFAULT_PERIOD;
   const deleteAccount = useAccountsStore((s) => s.deleteAccount);
   const copy = useClipboard();
@@ -61,13 +62,16 @@ export function AccountItem({ account, remaining, isFocused }: AccountItemProps)
         )}
       </div>
       {account.otp && (
-        <div className="flex items-center gap-2">
+        <div
+          className={`flex items-center gap-2${stale ? " opacity-40 grayscale" : ""}`}
+          title={stale ? "Refresh failed — this code may be stale" : undefined}
+        >
           {isCopied ? (
             <span className="text-xs font-bold uppercase tracking-wider text-[#F97316]">Copied!</span>
           ) : (
             <OtpCode code={account.otp.password} accountId={account.id} />
           )}
-          {account.otp_type === "totp" && (
+          {account.otp_type === "totp" && !stale && (
             <CountdownRing remaining={remaining} period={period} />
           )}
         </div>
