@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "2FA Auth",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "identifier": "com.2faauth.desktop",
   "build": {
     "frontendDist": "../dist",
