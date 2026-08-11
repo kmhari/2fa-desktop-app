@@ -40,29 +40,57 @@ export TAURI_SIGNING_PRIVATE_KEY
 export TAURI_SIGNING_PRIVATE_KEY_PASSWORD="${TAURI_SIGNING_PRIVATE_KEY_PASSWORD:-}"
 
 # ── Read current version ────────────────────────────────────
-CURRENT=$(grep '"version"' "$ROOT/package.json" | head -1 | sed 's/.*"\([0-9]*\.[0-9]*\.[0-9]*\)".*/\1/')
-IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT"
+PKG_VERSION=$(grep '"version"' "$ROOT/package.json" | head -1 | sed 's/.*"\([0-9]*\.[0-9]*\.[0-9]*\)".*/\1/')
+
+# ── Find latest published tag/release on GitHub ──────────────
+echo "Checking existing tags on GitHub..."
+REMOTE_TAGS=$(git ls-remote --tags origin 'v[0-9]*' 2>/dev/null | sed -E 's#.*refs/tags/v##; s/\^\{\}$//' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' || true)
+LATEST_REMOTE_TAG=$(printf '%s\n' "$REMOTE_TAGS" | sort -t. -k1,1n -k2,2n -k3,3n | tail -1)
+
+CURRENT="$PKG_VERSION"
+if [ -n "$LATEST_REMOTE_TAG" ]; then
+  HIGHEST=$(printf '%s\n%s\n' "$PKG_VERSION" "$LATEST_REMOTE_TAG" | sort -t. -k1,1n -k2,2n -k3,3n | tail -1)
+  if [ "$HIGHEST" != "$PKG_VERSION" ]; then
+    echo "package.json ($PKG_VERSION) is behind latest GitHub tag ($LATEST_REMOTE_TAG); bumping from $LATEST_REMOTE_TAG instead"
+  fi
+  CURRENT="$HIGHEST"
+fi
 
 echo "Current version: $CURRENT"
 
 # ── Bump ────────────────────────────────────────────────────
-case "$BUMP" in
-  major) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
-  minor) MINOR=$((MINOR + 1)); PATCH=0 ;;
-  patch) PATCH=$((PATCH + 1)) ;;
-esac
-VERSION="$MAJOR.$MINOR.$PATCH"
+bump_version() {
+  local base="$1"
+  IFS='.' read -r bmajor bminor bpatch <<< "$base"
+  case "$BUMP" in
+    major) bmajor=$((bmajor + 1)); bminor=0; bpatch=0 ;;
+    minor) bminor=$((bminor + 1)); bpatch=0 ;;
+    patch) bpatch=$((bpatch + 1)) ;;
+  esac
+  echo "$bmajor.$bminor.$bpatch"
+}
+
+VERSION=$(bump_version "$CURRENT")
+
+# Guard against any remaining collision (e.g. tag exists but wasn't caught above)
+while printf '%s\n' "$REMOTE_TAGS" | grep -qx "$VERSION" || git rev-parse "v$VERSION" >/dev/null 2>&1 || gh release view "v$VERSION" >/dev/null 2>&1; do
+  echo "v$VERSION already exists on GitHub; bumping again"
+  VERSION=$(bump_version "$VERSION")
+done
+
 echo "New version:     $VERSION ($BUMP bump)"
 
 # ── Update version in all config files ──────────────────────
+# (files on disk still hold PKG_VERSION, which may lag behind the
+#  resolved CURRENT baseline if GitHub had a newer tag)
 # package.json
-sed -i '' "s/\"version\": \"$CURRENT\"/\"version\": \"$VERSION\"/" "$ROOT/package.json"
+sed -i '' "s/\"version\": \"$PKG_VERSION\"/\"version\": \"$VERSION\"/" "$ROOT/package.json"
 
 # tauri.conf.json
-sed -i '' "s/\"version\": \"$CURRENT\"/\"version\": \"$VERSION\"/" "$ROOT/src-tauri/tauri.conf.json"
+sed -i '' "s/\"version\": \"$PKG_VERSION\"/\"version\": \"$VERSION\"/" "$ROOT/src-tauri/tauri.conf.json"
 
 # Cargo.toml
-sed -i '' "s/^version = \"$CURRENT\"/version = \"$VERSION\"/" "$ROOT/src-tauri/Cargo.toml"
+sed -i '' "s/^version = \"$PKG_VERSION\"/version = \"$VERSION\"/" "$ROOT/src-tauri/Cargo.toml"
 
 echo "Updated package.json, tauri.conf.json, Cargo.toml → $VERSION"
 
